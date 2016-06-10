@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define IDM_ABOUT 1900
+#define IDM_M_QUIT 1901
 #define IDC_BUTTON1 1902
 #define IDC_BUTTON2 1903
 
@@ -27,12 +29,42 @@ void CreeareButoane(HWND hwnd){
 	tab_err = CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "", WS_CHILD | WS_VISIBLE, 1330, 750, 25, 25, hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
 	CreateWindowW(L"static", L"Mesajul receptionat:", WS_CHILD | WS_VISIBLE, 950, 780, 500, 26, hwnd, (HMENU)1, NULL, NULL);
 }
+void AdaugaImagine(HWND hwnd){
+	//Fundal
+	HANDLE hBitmap = LoadImageW(NULL, L"space.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	HWND hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, 0, 0, 1500, 843, hwnd, (HMENU)1, NULL, NULL);
+	SendMessage(hsti, STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+	//Satelit 1
+	hBitmap = LoadImageW(NULL, L"Sat1.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, 120, 450, 345, 255, hwnd, (HMENU)1, NULL, NULL);
+	SendMessage(hsti, STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+	//Satelit 2
+	hBitmap = LoadImageW(NULL, L"Sat2.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, 1000, 430, 371, 312, hwnd, (HMENU)1, NULL, NULL);
+	SendMessage(hsti, STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmap);
+}
+void AdaugaMeniuTab(HWND hwnd) {
+	HMENU hMenubar = CreateMenu();
+	HMENU hMenu = CreateMenu();
+	//Creem un TabMenu
+	AppendMenuW(hMenu, MF_STRING, IDM_ABOUT, L"&About");
+	AppendMenuW(hMenu, MF_SEPARATOR, 0, NULL);
+	AppendMenuW(hMenu, MF_STRING, IDM_M_QUIT, L"&EXIT");
+
+	AppendMenuW(hMenubar, MF_POPUP, (UINT_PTR)hMenu, L"&Referinte");
+	SetMenu(hwnd, hMenubar);
+}
 LRESULT CALLBACK MainProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
 	case WM_CREATE:
 	{
+		//Imaginile de pe fundal
+		AdaugaImagine(hwnd);
+		//Tabul
+		AdaugaMeniuTab(hwnd);
+		//Adaugam Ferestrele de inserare
 		CreeareButoane(hwnd);
 	}
 	break;
