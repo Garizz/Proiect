@@ -1,0 +1,5 @@
+#define IDM_ABOUT 1900
+#define IDM_M_QUIT 1901
+#define IDC_BUTTON1 1902
+#define IDC_BUTTON2 1903
+
